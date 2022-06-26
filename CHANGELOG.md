@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rewrite relevant doc comments as `structopt` help document.
 - Update `bdk` and `bdk-reserves` to v0.19.0.
 - Change default database to `sqlite`.
+- Add new `bdk-cli node <command> [<args>]` to control the backend node deployed by
+  deployed by `regtest-*` features.
+- Add an integration testing framework in `src/tests/integration.rs`. This framework uses
+  the `regtest-*` feature to run automated testing with bdk-cli.
 
 ## [0.5.0]
 
