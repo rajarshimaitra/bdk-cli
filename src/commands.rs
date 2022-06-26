@@ -10,7 +10,9 @@
 //!
 //! This module defines all the bdk-cli commands using [structopt]
 
+#![allow(clippy::large_enum_variant)]
 use structopt::clap::AppSettings;
+
 use structopt::StructOpt;
 
 use bdk::bitcoin::util::bip32::{DerivationPath, ExtendedPrivKey};
