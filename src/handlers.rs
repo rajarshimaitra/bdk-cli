@@ -379,7 +379,7 @@ where
     }
 }
 
-/// Execute a key sub-command
+/// Handle a key sub-command
 ///
 /// Key sub-commands are described in [`KeySubCommand`].
 pub(crate) fn handle_key_subcommand(
@@ -449,7 +449,7 @@ pub(crate) fn handle_key_subcommand(
     }
 }
 
-/// Execute the miniscript compiler sub-command
+/// Handle the miniscript compiler sub-command
 ///
 /// Compiler options are described in [`CliSubCommand::Compile`].
 #[cfg(feature = "compiler")]
@@ -477,7 +477,7 @@ pub(crate) fn handle_compile_subcommand(
     Ok(json!({"descriptor": descriptor.to_string()}))
 }
 
-/// Proof of reserves verification sub-command
+/// Handle Proof of Reserves commands
 ///
 /// Proof of reserves options are described in [`CliSubCommand::ExternalReserves`].
 #[cfg(all(feature = "reserves", feature = "electrum"))]
@@ -518,6 +518,7 @@ pub(crate) fn handle_ext_reserves_subcommand(
     Ok(json!({ "spendable": spendable }))
 }
 
+/// The mother of all handlers
 pub(crate) fn handle_command(cli_opts: CliOpts) -> Result<String, Error> {
     let network = cli_opts.network;
     let home_dir = prepare_home_dir(cli_opts.datadir)?;

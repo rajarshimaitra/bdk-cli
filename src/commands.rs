@@ -8,7 +8,9 @@
 
 //! bdk-cli Command structure
 //!
-//! This module defines all the bdk-cli commands using [structopt]
+//! This module defines all the bdk-cli commands structure.
+//! All option args are defined in the structs below.
+//! All subcommands are defined in the below enums.
 
 #![allow(clippy::large_enum_variant)]
 use structopt::clap::AppSettings;
@@ -38,7 +40,7 @@ use crate::utils::{parse_outpoint, parse_recipient};
 /// But this is not just any toy.
 /// bdk-cli is also a fully functioning Bitcoin wallet with taproot support!
 ///
-/// For more information checkout https://bitcoindevkit.org/
+/// For more information checkout <https://bitcoindevkit.org/>
 #[structopt(version = option_env ! ("CARGO_PKG_VERSION").unwrap_or("unknown"),
 author = option_env ! ("CARGO_PKG_AUTHORS").unwrap_or(""))]
 pub struct CliOpts {
@@ -54,12 +56,12 @@ pub struct CliOpts {
     /// Default value : "~/.bdk-bitcoin
     #[structopt(name = "DATADIR", short = "d", long = "datadir")]
     pub datadir: Option<std::path::PathBuf>,
-    /// Top level cli sub-command
+    /// Top level cli sub-commands
     #[structopt(subcommand)]
     pub subcommand: CliSubCommand,
 }
 
-/// CLI sub-commands
+/// Top level cli sub-commands
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 #[structopt(rename_all = "snake")]
 pub enum CliSubCommand {
@@ -69,7 +71,7 @@ pub enum CliSubCommand {
     /// launched automatically with the `regtest-*` feature sets. The commands issues
     /// bitcoin-cli rpc calls on the demon, in the background.
     ///
-    /// Feel free to open feature-request in https://github.com/bitcoindevkit/bdk-cli
+    /// Feel free to open feature-request in <https://github.com/bitcoindevkit/bdk-cli>
     /// if you need extra rpc calls not covered in the command list.
     #[cfg(feature = "regtest-node")]
     #[structopt(long_about = "Regtest Node mode")]
@@ -142,6 +144,7 @@ pub enum CliSubCommand {
     },
 }
 
+/// Backend Node operation subcommands
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 #[structopt(rename_all = "lower")]
 #[cfg(any(feature = "regtest-node"))]
@@ -158,6 +161,7 @@ pub enum NodeSubCommand {
     SendToAddress { address: String, amount: u64 },
 }
 
+/// Wallet operation subcommands
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub enum WalletSubCommand {
     #[cfg(any(
@@ -172,6 +176,7 @@ pub enum WalletSubCommand {
     OfflineWalletSubCommand(OfflineWalletSubCommand),
 }
 
+/// Config options wallet operations can take
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct WalletOpts {
     /// Selects the wallet to use
@@ -203,6 +208,7 @@ pub struct WalletOpts {
     pub proxy_opts: ProxyOpts,
 }
 
+/// Options to configure SOCKS5 Proxy connection to backend
 #[cfg(any(feature = "compact_filters", feature = "electrum", feature = "esplora"))]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct ProxyOpts {
@@ -224,6 +230,7 @@ pub struct ProxyOpts {
     pub retries: u8,
 }
 
+/// Options to configure BIP157 Compact Filter backend
 #[cfg(feature = "compact_filters")]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct CompactFilterOpts {
@@ -250,6 +257,7 @@ pub struct CompactFilterOpts {
     pub skip_blocks: usize,
 }
 
+/// Options to configure bitcoin core rpc backend
 #[cfg(feature = "rpc")]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct RpcOpts {
@@ -281,6 +289,7 @@ pub struct RpcOpts {
     pub skip_blocks: Option<u32>,
 }
 
+/// Options to configure electrum backend
 #[cfg(feature = "electrum")]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct ElectrumOpts {
@@ -306,6 +315,7 @@ pub struct ElectrumOpts {
     pub stop_gap: usize,
 }
 
+/// Options to configure Esplora backend
 #[cfg(feature = "esplora")]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub struct EsploraOpts {
@@ -336,6 +346,7 @@ pub struct EsploraOpts {
     pub conc: u8,
 }
 
+/// Wallet subcommands that can be issued without a blockchain backend
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 #[structopt(rename_all = "snake")]
 pub enum OfflineWalletSubCommand {
@@ -440,6 +451,7 @@ pub enum OfflineWalletSubCommand {
     },
 }
 
+/// Wallet subcommands that needs a blockchain backend
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 #[structopt(rename_all = "snake")]
 #[cfg(any(
@@ -492,6 +504,7 @@ pub enum OnlineWalletSubCommand {
     },
 }
 
+/// Subcommands for Key operations
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 pub enum KeySubCommand {
     /// Generates new random seed mnemonic phrase and corresponding master extended key
@@ -529,6 +542,7 @@ pub enum KeySubCommand {
     },
 }
 
+/// Subcommands available in REPL mode
 #[cfg(feature = "repl")]
 #[derive(Debug, StructOpt, Clone, PartialEq)]
 #[structopt(global_settings =&[AppSettings::NoBinaryName])]

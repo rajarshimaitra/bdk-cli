@@ -99,6 +99,7 @@ pub(crate) fn parse_proxy_auth(s: &str) -> Result<(String, String), String> {
     Ok((user, passwd))
 }
 
+/// Fetch all the utxos, for a given address
 #[cfg(all(feature = "reserves", feature = "electrum"))]
 pub fn get_outpoints_for_address(
     address: Address,
@@ -213,9 +214,9 @@ fn prepare_bc_dir(wallet_name: &str, home_path: &Path) -> Result<PathBuf, Error>
     Ok(bc_dir)
 }
 
-// We create only a global single node directory. Because multiple
-// wallets can access the same node datadir, and they will have separate
-// wallet names in `<home_path>/bitcoind/regtest/wallets`.
+/// We create only a global single node directory. Because multiple
+/// wallets can access the same node datadir, and they will have separate
+/// wallet names in `<home_path>/bitcoind/regtest/wallets`.
 #[cfg(feature = "regtest-node")]
 pub(crate) fn prepare_bitcoind_datadir(home_path: &Path) -> Result<PathBuf, Error> {
     let mut dir = home_path.to_owned();
@@ -275,6 +276,7 @@ pub(crate) fn open_database(
     Ok(database)
 }
 
+/// Create a new backend node at given datadir
 #[allow(dead_code)]
 pub(crate) fn new_backend(_datadir: &Path) -> Result<Nodes, Error> {
     #[cfg(feature = "regtest-node")]
